@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
     inputs:
       version:
-        description: '新版本号 (如 v2026.2.1-rc4)'
+        description: '新版本号 (如 v2026.2.1)'
         required: true
         default: 'v2026.2.2'
 
@@ -21,6 +21,14 @@ jobs:
         run: |
           echo "NEW_VERSION=${{ github.event.inputs.version }}" >> $GITHUB_ENV
           echo "NEW_VERSION_DATE=$(date +'%Y/%m/%d')" >> $GITHUB_ENV
+
+      - name: Validate version format
+        run: |
+          VERSION="${{ github.event.inputs.version }}"
+          if ! [[ "$VERSION" =~ ^v[0-9]{4}\.[0-9]{1,2}(\.[0-9]+)?(-rc[0-9]+)?$ ]]; then
+            echo "版本格式错误，应为 v2026.2.1 或 v2026.2.1-rc1"
+            exit 1
+          fi
 
       - name: Set version without v
         run: |
