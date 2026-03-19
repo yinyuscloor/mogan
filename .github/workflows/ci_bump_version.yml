@@ -19,12 +19,12 @@ jobs:
 
       - name: Set new version to env
         run: |
-          echo "NEW_VERSION=${{ github.events.inputs.version }}" >> $GITHUB_ENV
+          echo "NEW_VERSION=${{ github.event.inputs.version }}" >> $GITHUB_ENV
           echo "NEW_VERSION_DATE=$(date +'%Y/%m/%d')" >> $GITHUB_ENV
 
       - name: Update devel/200_22.md
         run: |
-          sed -i '3i## ${{ env.NEW_VERSION_DATE }} ${{ env.NEW_VERSION }}    打包\n' devel/200_22.md
+          sed -i "3i## ${{ env.NEW_VERSION_DATE }} ${{ env.NEW_VERSION }}    打包" devel/200_22.md
 
       - name: Update xmake/vars.lua and Git
         run: |
