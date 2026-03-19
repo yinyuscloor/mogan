@@ -20,8 +20,12 @@ jobs:
       - name: Set new version to env
         run: |
           echo "NEW_VERSION=${{ github.event.inputs.version }}" >> $GITHUB_ENV
-          echo "NEW_VERSION_WITHOUT_V=${NEW_VERSION#v}" >> $GITHUB_ENV
           echo "NEW_VERSION_DATE=$(date +'%Y/%m/%d')" >> $GITHUB_ENV
+
+      - name: Set version without v
+        run: |
+          VERSION="${{ github.event.inputs.version }}"
+          echo "NEW_VERSION_WITHOUT_V=${VERSION#v}" >> $GITHUB_ENV
 
       - name: Update devel/200_22.md
         run: |
