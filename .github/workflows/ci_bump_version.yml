@@ -20,6 +20,7 @@ jobs:
       - name: Set new version to env
         run: |
           echo "NEW_VERSION=${{ github.event.inputs.version }}" >> $GITHUB_ENV
+          echo "NEW_VERSION_WITHOUT_V=${NEW_VERSION#v}" >> $GITHUB_ENV
           echo "NEW_VERSION_DATE=$(date +'%Y/%m/%d')" >> $GITHUB_ENV
 
       - name: Update devel/200_22.md
@@ -31,7 +32,7 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
-          sed -i 's/^XMACS_VERSION="[^"]*"/XMACS_VERSION="${{ env.NEW_VERSION }}"/' xmake/vars.lua
+          sed -i 's/^XMACS_VERSION="[^"]*"/XMACS_VERSION="${{ env.NEW_VERSION_WITHOUT_V }}"/' xmake/vars.lua
 
           git add .
           git commit -m "[200_22] bump to Mogan STEM ${{ env.NEW_VERSION }}"
